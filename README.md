@@ -1,4 +1,4 @@
-# Aadhaar Voting
+# Cryptopia Voting
 Voting system using blockchain technology
 Project implemented as part of Rajasthan Hackathron
 
