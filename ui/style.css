@@ -33,3 +33,31 @@ body {
     width: 250px;
     margin: 0 auto;
   }
+
+  input {
+    padding: 10px;
+    border: 1px solid #ffb42b;
+    border-radius: 20px;
+    background: transparent;
+    color: #fff;
+    font-size: 1em;
+  }
+  
+  input::placeholder {
+    color: #ccc;
+  }
+  
+  button {
+    background-color: #d4a017;
+    color: #000;
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #eeb422;
+  }
