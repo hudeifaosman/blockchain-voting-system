@@ -1,89 +1,110 @@
+import Web3 from 'web3';
+import config from '../config/blockchain.json';  // adjust path as needed
 
+$(document).ready(function () {
+    $('.modal').modal();
+    const aadhaarList = {
+        "300000000000": "Akola",
+        "738253790005": "Bhandara"
+    };
 
-
-$(document).ready(function() {
-$('.modal').modal();
-	// $.ajax({
- //    url: '/getaddress',
- //    method: 'post'
-	// }).done(function(){
-	// 	console.log('done');
-	// });
-
-
-	web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-	abi = JSON.parse('[{"constant":false,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"totalVotesFor","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"validCandidate","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"votesReceived","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"x","type":"bytes32"}],"name":"bytes32ToString","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"candidateList","outputs":[{"name":"","type":"bytes32"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"voteForCandidate","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"contractOwner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"inputs":[{"name":"candidateNames","type":"bytes32[]"}],"payable":false,"type":"constructor"}]')
-	VotingContract = web3.eth.contract(abi);
-	contractInstance = VotingContract.at('0xa7fb89a3fe6927b6d272637b148775f6fee5a8cf');
-	// candidates = {"Rama": "candidate-1", "Nick": "candidate-2", "Jose": "candidate-3"}
-
-
-	//check cookie
-	function readCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    function readCookie(name) {
+        const nameEQ = name + "=";
+        return document.cookie.split(';').map(c => c.trim())
+            .find(c => c.startsWith(nameEQ))
+            ?.substring(nameEQ.length) || null;
     }
-    return null;
-	}
 
-	var aadhaar_list = {
-		"300000000000" : "Akola",
-		"738253790005" : "Bhandara"
-	}
+    const aadhaar = readCookie('aadhaar');
+    $('#loc_info').text('Location based on Aadhaar: ' + (aadhaarList[aadhaar] || 'Unknown'));
 
-	var aadhaar = readCookie('aadhaar');
+    $('#connectWallet').click(async () => {
+        if (!window.ethereum) {
+            return alert('MetaMask not detected. Please install MetaMask!');
+        }
 
-	console.log(aadhaar);
-	var address = aadhaar_list[aadhaar];
-	console.log(address);
-	$('#loc_info').text('Location based on Aadhaar : '+ address)
+        const web3 = new Web3(window.ethereum);
+        try {
+            await window.ethereum.request({method: 'eth_requestAccounts'});
+        } catch (err) {
+            console.error('User denied account access', err);
+            return alert('Please allow wallet access to continue.');
+        }
 
-	function disable() {
-			$('#vote1').addClass( "disabled" );
-		    $('#vote2').addClass( "disabled" );
-		    $('#vote3').addClass( "disabled" );
-		    $('#vote4').addClass( "disabled" );
-		    
-		    //logout
-		    document.cookie = "show=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
-		    document.cookie = "aadhaar=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
-		    window.location = '/app';
+        const accounts = await web3.eth.getAccounts();
+        const userAccount = accounts[0];
+        $('#accountDisplay').text(`Connected: ${userAccount}`);
+        $('#connectWallet').prop('disabled', true).text('Wallet Connected');
 
+        const contractInstance = new web3.eth.Contract(
+            config.abi,
+            config.contractAddress,
+            {from: userAccount}
+        );
 
-	}
+        contractInstance.events.VoteCast({fromBlock: 'latest'})
+            .on('data', event => {
+                const candidate = web3.utils.hexToUtf8(event.returnValues.candidate);
+                const total = event.returnValues.total;
+                $(`#${candidate}-count`).text(total);
+            })
+            .on('error', err => console.error('Event subscription error:', err));
 
-	$('#vote1').click(function(){
-		contractInstance.voteForCandidate('Sanat', {from: web3.eth.accounts[0]}, function() {
-		    alert('vote submited to Sanat');
-		    disable();
-		    $('#loc_info').text('Vote submited successfully to Sanat')
+        window.ethereum.on('accountsChanged', () => location.reload());
+        window.ethereum.on('chainChanged', () => location.reload());
 
-		});
-	})
-	$('#vote2').click(function(){
-		contractInstance.voteForCandidate('Aniket', {from: web3.eth.accounts[0]}, function() {
-		    alert('vote submited to Aniket');
-		     disable();
-		     $('#loc_info').text('Vote submited successfully to Aniket')
-		});
-	})
-	$('#vote3').click(function(){
-		contractInstance.voteForCandidate('Mandar', {from: web3.eth.accounts[0]}, function() {
-		    alert('vote submited to Mandar');
-		     disable();
-		      
-		      $('#loc_info').text('Vote submited successfully to Mandar')
-		});
-	})
-	$('#vote4').click(function(){
-		contractInstance.voteForCandidate('Akshay', {from: web3.eth.accounts[0]}, function() {
-		    alert('vote submited to Akshay');
-		     disable();
-		     $('#loc_info').text('Vote submited successfully to Akshay')
-		});
-	})
+        const hex = name => web3.utils.asciiToHex(name);
+
+        function disableVoting() {
+            $('#vote1,#vote2,#vote3,#vote4').addClass('disabled');
+
+            document.cookie = "show=; max-age=0; path=/";
+            document.cookie = "aadhaar=; max-age=0; path=/";
+            location.href = '/app';
+        }
+
+        $('#vote1').click(() => {
+            contractInstance.methods.voteForCandidate(hex('Sanat'))
+                .send()
+                .on('transactionHash', hash => $('#loc_info').text('Tx sent: ' + hash))
+                .on('receipt', () => {
+                    $('#loc_info').text('Voted for Sanat!');
+                    disableVoting();
+                })
+                .on('error', err => alert('Sanat vote failed: ' + err.message));
+        });
+
+        $('#vote2').click(() => {
+            contractInstance.methods.voteForCandidate(hex('Aniket'))
+                .send()
+                .on('transactionHash', hash => $('#loc_info').text('Tx sent: ' + hash))
+                .on('receipt', () => {
+                    $('#loc_info').text('Voted for Aniket!');
+                    disableVoting();
+                })
+                .on('error', err => alert('Aniket vote failed: ' + err.message));
+        });
+
+        $('#vote3').click(() => {
+            contractInstance.methods.voteForCandidate(hex('Mandar'))
+                .send()
+                .on('transactionHash', hash => $('#loc_info').text('Tx sent: ' + hash))
+                .on('receipt', () => {
+                    $('#loc_info').text('Voted for Mandar!');
+                    disableVoting();
+                })
+                .on('error', err => alert('Mandar vote failed: ' + err.message));
+        });
+
+        $('#vote4').click(() => {
+            contractInstance.methods.voteForCandidate(hex('Akshay'))
+                .send()
+                .on('transactionHash', hash => $('#loc_info').text('Tx sent: ' + hash))
+                .on('receipt', () => {
+                    $('#loc_info').text('Voted for Akshay!');
+                    disableVoting();
+                })
+                .on('error', err => alert('Akshay vote failed: ' + err.message));
+        });
+    });
 });
