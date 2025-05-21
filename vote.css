@@ -68,3 +68,20 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     justify-content: space-between;
   }
+
+  .party-icon {
+    text-align: center;
+    display: flex;
+    width: 140px;
+  }
+  
+  .party-icon img {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .party-name {
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
