@@ -126,3 +126,19 @@
     color: #3a2aa6;
     text-decoration: none;
   }
+
+  .vote-button {
+    width: 100px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .vote-button button {
+    background-color: #DAA520;
+    color: black;
+    font-weight: bold;
+    padding: 0.6rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
