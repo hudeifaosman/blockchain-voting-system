@@ -142,3 +142,13 @@
     border-radius: 10px;
     cursor: pointer;
   }
+
+  footer {
+    background-color: #0B1D0B;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 2rem;
+    font-size: 0.8rem;
+  }
+  
