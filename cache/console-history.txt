@@ -1,0 +1,12 @@
+.exit
+console.log("Alice now has", updated.toString(), "votes");
+const updated = await voting.totalVotesFor(ethers.utils.formatBytes32String("Alice"));
+console.log("Voted! Tx hash:", tx.hash);
+await tx.wait();
+const tx = await voting.voteForCandidate(ethers.utils.formatBytes32String("Alice"));
+console.log("Alice has", votes.toString(), "votes");
+const votes = await voting.totalVotesFor(ethers.utils.formatBytes32String("Alice"));
+const voting = Voting.attach("0x97977e4c14174cD3db044732ebD32A39E78AaA3F");
+const Voting = await ethers.getContractFactory("Voting");
+console.log("Using account:", deployer.address);
+const [deployer] = await ethers.getSigners();

@@ -25,5 +25,10 @@
   "bugs": {
     "url": "https://github.com/sanattaori/techdot/issues"
   },
-  "homepage": "https://github.com/sanattaori/techdot#readme"
+  "homepage": "https://github.com/sanattaori/techdot#readme",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "ethers": "^5.8.0",
+    "hardhat": "^2.24.0"
+  }
 }
