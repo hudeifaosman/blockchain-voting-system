@@ -9,18 +9,16 @@ $(document).ready(function () {
 	function readCookie(name) {
 		var nameEQ = name + "=";
 		var ca = document.cookie.split(';');
-		for(var i=0;i < ca.length;i++) {
+		for (var i = 0; i < ca.length; i++) {
 			var c = ca[i];
-			while (c.charAt(0)==' ') c = c.substring(1,c.length);
-			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+			while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
 		}
 		return null;
 	}
 
-	// Error message box (keep if needed for other errors)
 	$('#messagebox').hide();
 
-	// MetaMask Connection Logic (moved from clist.js)
 	$('#connectWallet').click(async () => {
 		if (!window.ethereum) {
 			$('#messagebox').show();
@@ -28,12 +26,18 @@ $(document).ready(function () {
 			return;
 		}
 
-		const web3 = new Web3(window.ethereum); // You'll need to ensure Web3 is available. See step 3.
 		try {
-			const accounts = await window.ethereum.request({method: 'eth_requestAccounts'});
+			// 1) see if we're already connected
+			let accounts = await window.ethereum.request({ method: 'eth_accounts' });
+			// 2) first-time visitor? ask for permission
+			if (accounts.length === 0) {
+				accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+			}
 			const userAccount = accounts[0];
 			$('#accountDisplay').text(`Connected: ${userAccount}`);
-			$('#connectWallet').prop('disabled', true).text('Wallet Connected');
+
+			// 3) now that we're connected, go straight to the vote page
+			window.location.href = 'clist.html';
 
 			// You might want to redirect to a different page or enable other UI elements here
 			// after a successful connection. For example:
