@@ -1,67 +1,60 @@
-import Web3 from 'web3';
-import config from '../config/blockchain.json';  // adjust path as needed
-
 // js/clist.js
-$(document).ready(async () => {
-  // 1) Load your deployed details at runtime
+
+(async function() {
+  // 1) Load deployed ABI & address
   const res = await fetch('blockchain.json');
-  if (!res.ok) {
-    return alert('Could not load contract info');
-  }
-  const config = await res.json();           // { abi: […], contractAddress: "0x…" }
-  
-  // 2) MetaMask connect logic (as before)…
-  if (!window.ethereum) {
-    return alert('MetaMask not detected');
-  }
+  if (!res.ok) return alert('Could not load contract info');
+  const { abi, contractAddress } = await res.json();
+
+  // 2) MetaMask / Web3 setup
+  if (!window.ethereum) return alert('MetaMask not detected');
   const web3 = new Web3(window.ethereum);
+
+  // 3) Connect once
   let accounts = await window.ethereum.request({ method: 'eth_accounts' });
   if (accounts.length === 0) {
     accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
   }
   const userAccount = accounts[0];
-  $('#accountDisplay').text(`Connected: ${userAccount}`);
-  $('#connectWallet').prop('disabled', true).text('Wallet Connected');
+  $('#accountDisplay')
+    .text(userAccount);
+  $('#connectWallet')
+    .text('Wallet Connected')
+    .prop('disabled', true)
+    .off('click'); // disable further clicks
 
-  // 3) Instantiate your contract from the fetched JSON
-  const votingContract = new web3.eth.Contract(
-    config.abi,
-    config.contractAddress,
-    { from: userAccount }
-  );
+  // 4) Instantiate contract
+  const votingContract = new web3.eth.Contract(abi, contractAddress);
 
-  // …then wire up your Vote buttons & events exactly as before…
+  // 5) Helper to sanitize names → IDs
+  function idify(name) {
+    return name.replace(/\s+/g, '').replace(/[^a-zA-Z0-9]/g, '');
+  }
+
+  // 6) Load initial vote counts
+  $('.candidate-card').each(async function() {
+    const name = $(this).data('name');
+    const hexName = web3.utils.asciiToHex(name);
+    const count = await votingContract.methods.totalVotesFor(hexName).call();
+    $(`#${idify(name)} .count`).text(count);
+  });
+
+  // 7) Subscribe to on-chain events
   votingContract.events.VoteCast({ fromBlock: 'latest' })
     .on('data', ev => {
-      const name = web3.utils.hexToUtf8(ev.returnValues.candidate);
-      $(`#${name}-count`).text(ev.returnValues.newTotal);
+      const raw = web3.utils.hexToAscii(ev.returnValues.candidate).replace(/\0/g, '');
+      const newTotal = ev.returnValues.newTotal;
+      // find the matching card and update its .count span
+      $(`.candidate-card[data-name="${raw}"] .count`).text(newTotal);
     });
 
-  const hex = name => web3.utils.asciiToHex(name);
-  $('#vote1').click(() =>
-    votingContract.methods.voteForCandidate(hex('Sanat'))
-      .send()
-      .on('transactionHash', h => $('#loc_info').text('Tx sent: ' + h))
-      .on('receipt', () => $('#loc_info').text('Voted for Sanat!'))
-  );
-  // …and so on for #vote2, #vote3, #vote4 …
-});
-
-
-$(document).ready(function () {
-    $('.modal').modal();
-    const aadhaarList = {
-        "300000000000": "Akola",
-        "738253790005": "Bhandara"
-    };
-
-    function readCookie(name) {
-        const nameEQ = name + "=";
-        return document.cookie.split(';').map(c => c.trim())
-            .find(c => c.startsWith(nameEQ))
-            ?.substring(nameEQ.length) || null;
-    }
-
-    const aadhaar = readCookie('aadhaar');
-    $('#loc_info').text('Location based on Aadhaar: ' + (aadhaarList[aadhaar] || 'Unknown'));
-});
+  // 8) Wire up Vote buttons
+  $('.vote-btn').click(async function() {
+    const name = $(this).closest('.candidate-card').data('name');
+    const hexName = web3.utils.asciiToHex(name);
+    const receipt = await votingContract.methods
+      .voteForCandidate(hexName)
+      .send({ from: userAccount });
+    console.log('Tx sent:', receipt.transactionHash);
+  });
+})();

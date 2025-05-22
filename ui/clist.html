@@ -1,123 +1,129 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <title></title>
-  <!-- Compiled and minified CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-
-  <!-- Compiled and minified JavaScript -->
- 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Decentralized Republic of Cryptopia</title>
+  <!-- CHANGED: CSS now loaded from ui/vote.css -->
+  <link rel="stylesheet" href="vote.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
- 
-<style>
-      body {
-        display: flex;
-         min-height: 100vh;
-        flex-direction: column;
-      }
-      man{
-          height: 200px;
+<body>
 
-        }
-  main {
-    flex: 1 0 auto;
-  }
-.blacktext {
-        color: black;
-        font-size: 20px;
-}
+  <!-- HEADER & NAV -->
+  <header>
+    <div class="header-left">
+      <!-- CHANGED: Logo path now relative to ui/ -->
+      <img src="images/2810213 1.png" alt="Logo" class="logo" />
+      <h1>DECENTRALIZED REPUBLIC OF CRYPTOPIA</h1>
+    </div>
+  </header>
 
-</style>
+  <!-- VERIFIED LOCATION -->
+  <section class="verified-location">
+    <div class="left">
+      <span class="verified">✅ Verified with Blockchain</span>
+    </div>
+    <div class="right">
+      <span class="location">📍 Cryptopia</span>
+    </div>
+  </section>
 
-<man>
-<nav style="height: 120px" >
-           <div class="nav-wrapper orange accent-3">
-            <img src="images/e-voting-logo.png" alt="" height="120" width="350" style="padding-left: 250px"; >
-           
-              <div class="brand-logo center"><h3 style="color: black">Election Commission Of India</h3></div>
-
-           </div>
-        </nav>
-    </man>
-    
-<main>
-<bodyt >
-
-	
-  <div class="container">
-   <div id="card-alert" class="card light-blue lighten-5">
-                      <div class="card-content light-blue-text">
-                        <p id="loc_info">NEWS : You have done 5 actions.</p>
-                      </div>
-                    </div>
-  <table>
-    <h1>
-  	
-        <thead>
-          <tr>
-              <th>Election Symbol</th>
-              <th>Party</th>
-              <th>Candidate Name</th>
-              <th>Vote</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-          	
-          	<td><img src="images/bjp.png" alt=" "height="42" width="42"></td>
-          	<td>Bharatiya Janata Party</td>
-            <td id="cand1">Sanat Taori</td>
-            <td ><button id="vote1" class="btn waves-effect waves-light" type="submit" name="action">Vote
-  </button></td>
-          </tr>
-          <tr>
-            <td><img src="images/cong.png" alt=" "height="42" width="42"></td>
-            <td>Indian National Congress</td>
-            <td id="cand2">Aniket Narkhede</td>
-            <td><button id="vote2"  class="btn waves-effect waves-light" type="submit" name="action">Vote
-    
-  </button></td>
-          </tr>
-          <tr>
-            <td><img src="images/rsc.png" alt=" "height="42" width="42"></td>
-            <td>Nationalist Congress Party</td>
-            <td id="cand3">Mandar Patil</td>
-            <td><button id="vote3"  class="btn waves-effect waves-light" type="submit" name="action">Vote
-    
-  </button></td>
-          </tr>
-          <tr>
-            <td><img src="images/shiv.png" alt=" "height="42" width="42"></td>
-             <td>Shiv Sena</td>
-            <td id="cand4">Akshay Motghare</td>
-            <td><button id="vote4" class="btn waves-effect waves-light" type="submit" name="action">Vote
-    
-  </button></td>
-          </tr>
-      </h1>
-    </table>
-  </div>
-    </main>
-        </tbody>
-      </bodyt>
-
-
-         <footer style="height: 70px"; class="page-footer green darken-2">
-              <div class="brand-logo center">made with <i class="fa fa-heart" style="color:red;"></i> by techdot</div>
+  <!-- CANDIDATE CARDS -->
+  <main class="candidates">
+    <div class="candidate-card" data-name="Jushua Lukak">
+      <div class="party-icon">
+        <img src="images/part1logo.png" alt="Crimson Front">
+        <div class="party-name">Crimson Front</div>
+      </div>
+      <div class="candidate-section">
+        <div class="candidate-photo">
+          <img src="images/Rectangle 7.png" alt="Jushua Lukak">
         </div>
-        </footer>
+        <div class="candidate-info">
+          <h3>Jushua Lukak</h3>
+          <p>Slogan: Power to the people, code to the commons<br/>Socialist, Progressive</p>
+          <a href="#">View Manifesto</a>
+        </div>
+      </div>
+      <div class="vote-button">
+        <button class="vote-btn">Vote</button>
+        <span class="count">0</span>
+      </div>
+    </div>
 
-        <script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script> 
-   <!-- Compiled and minified JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-          
-<script src="https://cdn.jsdelivr.net/npm/web3@1.8.2/dist/web3.min.js"></script>
+    <div class="candidate-card" data-name="Hudeifa Osman">
+      <div class="party-icon">
+        <img src="images/party2logo.png" alt="Liberty Ledger">
+        <div class="party-name">Liberty Ledger</div>
+      </div>
+      <div class="candidate-section">
+        <div class="candidate-photo">
+          <img src="images/hudeifa.png" alt="Hudeifa Osman">
+        </div>
+        <div class="candidate-info">
+          <h3>Hudeifa Osman</h3>
+          <p>Slogan: Freedom, Trade, and Trustless Markets<br/>Capitalist, Conservative</p>
+          <a href="#">View Manifesto</a>
+        </div>
+      </div>
+      <div class="vote-button">
+        <button class="vote-btn">Vote</button>
+        <span class="count">0</span>
+      </div>
+    </div>
 
-<script type="text/javascript" src="js/clist.js"></script>
+    <div class="candidate-card" data-name="Abenezer">
+      <div class="party-icon">
+        <img src="images/party3logo.png" alt="Green Hash Movement (GHM)">
+        <div class="party-name">Green Hash Movement (GHM)</div>
+      </div>
+      <div class="candidate-section">
+        <div class="candidate-photo">
+          <img src="images/abenezer.png" alt="Abenezer">
+        </div>
+        <div class="candidate-info">
+          <h3>Abenezer</h3>
+          <p>Slogan: Code Green for a Decentralized Tomorrow<br/>Eco-friendly, Nature-oriented</p>
+          <a href="#">View Manifesto</a>
+        </div>
+      </div>
+      <div class="vote-button">
+        <button class="vote-btn">Vote</button>
+        <span class="count">0</span>
+      </div>
+    </div>
+
+    <div class="candidate-card" data-name="Precious Nwoke">
+      <div class="party-icon">
+        <img src="images/party4logo.png" alt="MetaCore Collective">
+        <div class="party-name">MetaCore Collective</div>
+      </div>
+      <div class="candidate-section">
+        <div class="candidate-photo">
+          <img src="images/precious.png" alt="Precious Nwoke">
+        </div>
+        <div class="candidate-info">
+          <h3>Precious Nwoke</h3>
+          <p>Slogan: Upgrade Society, One Block at a Time<br/>Technocratic, Futurist, Radical Center</p>
+          <a href="#">View Manifesto</a>
+        </div>
+      </div>
+      <div class="vote-button">
+        <button class="vote-btn">Vote</button>
+        <span class="count">0</span>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div>Champions innovation, digital identity rights, and AI-blockchain governance experiments.</div>
+    <div>Designed by <strong>Dev Divas</strong></div>
+  </footer>
+
+  <!-- CHANGED: Load dependencies & your updated clist.js -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> 
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.8.2/dist/web3.min.js"></script>
+  <script src="js/clist.js"></script>
+</body>
 </html>
