@@ -1,6 +1,6 @@
 // js/clist.js
 
-(async function() {
+(async function () {
   // 1) Load deployed ABI & address
   const res = await fetch('blockchain.json');
   if (!res.ok) return alert('Could not load contract info');
@@ -32,7 +32,7 @@
   }
 
   // 6) Load initial vote counts
-  $('.candidate-card').each(async function() {
+  $('.candidate-card').each(async function () {
     const name = $(this).data('name');
     const hexName = web3.utils.asciiToHex(name);
     const count = await votingContract.methods.totalVotesFor(hexName).call();
@@ -40,21 +40,25 @@
   });
 
   // 7) Subscribe to on-chain events
-  votingContract.events.VoteCast({ fromBlock: 'latest' })
+  votingContract.events.VoteCast({ fromBlock: 0 })
     .on('data', ev => {
+      // updateUI logic:
       const raw = web3.utils.hexToAscii(ev.returnValues.candidate).replace(/\0/g, '');
-      const newTotal = ev.returnValues.newTotal;
-      // find the matching card and update its .count span
-      $(`.candidate-card[data-name="${raw}"] .count`).text(newTotal);
+      const total = ev.returnValues.newTotal;
+      $(`.candidate-card[data-name="${raw}"] .count`).text(total);
     });
 
+
   // 8) Wire up Vote buttons
-  $('.vote-btn').click(async function() {
+  $('.vote-btn').click(async function () {
     const name = $(this).closest('.candidate-card').data('name');
     const hexName = web3.utils.asciiToHex(name);
     const receipt = await votingContract.methods
       .voteForCandidate(hexName)
-      .send({ from: userAccount });
+      .send({
+        from: userAccount,
+        gasPrice: '0'
+      })
     console.log('Tx sent:', receipt.transactionHash);
   });
 })();

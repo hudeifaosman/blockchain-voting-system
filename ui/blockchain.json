@@ -1,5 +1,5 @@
 {
-
+  "contractAddress": "0xFc4241aD5c2bAdfbEA2894D11F3212EaEE5004fA",
   "abi": [
     {
       "inputs": [
@@ -120,7 +120,5 @@
       "stateMutability": "view",
       "type": "function"
     }
-  ],
-
-  "contractAddress": "0x3cF0Ee4eEE30A62EdCb3e349E9944aE2F8F22D2C"
+  ]
 }

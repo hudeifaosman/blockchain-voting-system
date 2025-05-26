@@ -1,3 +1,16 @@
+for (const n of names) {  const votes = await voting.totalVotesFor(    ethers.utils.formatBytes32String(n)  );  console.log(`${n} has ${votes.toString()} votes`);}
+}
+  console.log(`${n} has ${votes.toString()} votes`);
+  );
+    ethers.utils.formatBytes32String(n)
+  const votes = await voting.totalVotesFor(
+for (const n of names) {
+const names = ["Jushua Lukak", "Hudeifa Osman", "Abenezer", "Precious Nwoke"];
+const voting = Voting.attach("0xFc4241aD5c2bAdfbEA2894D11F3212EaEE5004fA");
+const Voting = await ethers.getContractFactory("Voting");
+await voting.totalVotesFor( ethers.utils.formatBytes32String("Hudeifa Osman") );
+const voting = Voting.attach("0xD0F043C380F76B7B046a063fd4EBf816029F6eeD");
+const Voting = await ethers.getContractFactory("Voting");
 .exit
 console.log("Alice now has", updated.toString(), "votes");
 const updated = await voting.totalVotesFor(ethers.utils.formatBytes32String("Alice"));
