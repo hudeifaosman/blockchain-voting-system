@@ -1,8 +1,8 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/osjr/Documents/blockchain-voting-system/contracts/voting.sol": {
-      "lastModificationDate": 1747826384056,
+    "/home/ermicho/uef/blockchain/blockChain/blockchain-voting-system/contracts/voting.sol": {
+      "lastModificationDate": 1747998734709,
       "contentHash": "bce5421091abc69d9fb764faa02ffce4",
       "sourceName": "contracts/voting.sol",
       "solcConfig": {

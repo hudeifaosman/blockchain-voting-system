@@ -8,6 +8,10 @@ body {
     align-items: center;
     height: 100vh;
   }
+
+  .gray-bg {
+    background-color: #001a00;
+  }
   
   .login-container {
     text-align: center;
@@ -15,12 +19,12 @@ body {
   }
 
   .icon {
-    width: 50px;
+    width: 6rem;
     margin-bottom: 20px;
   }
   
   h1 {
-    font-size: 1.4em;
+    font-size: 2rem;
     margin-bottom: 30px;
     font-weight: bold;
     line-height: 1.4;
@@ -52,10 +56,13 @@ body {
     color: #000;
     border: none;
     border-radius: 20px;
-    padding: 10px;
-    font-size: 1em;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #001a00;
     cursor: pointer;
     transition: background 0.3s ease;
+    margin: 2rem 0 0 0;
   }
   
   button:hover {
