@@ -7,7 +7,7 @@ async function main() {
   await hre.run("compile");
 
   const rawNames = [
-    "Jushua Lukak",
+    "Joshua Lukak",
     "Hudeifa Osman",
     "Abenezer",
     "Precious Nwoke"

@@ -5,7 +5,7 @@ for (const n of names) {  const votes = await voting.totalVotesFor(    ethers.ut
     ethers.utils.formatBytes32String(n)
   const votes = await voting.totalVotesFor(
 for (const n of names) {
-const names = ["Jushua Lukak", "Hudeifa Osman", "Abenezer", "Precious Nwoke"];
+const names = ["Joshua Lukak", "Hudeifa Osman", "Abenezer", "Precious Nwoke"];
 const voting = Voting.attach("0xFc4241aD5c2bAdfbEA2894D11F3212EaEE5004fA");
 const Voting = await ethers.getContractFactory("Voting");
 await voting.totalVotesFor( ethers.utils.formatBytes32String("Hudeifa Osman") );
