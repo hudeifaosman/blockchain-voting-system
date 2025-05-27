@@ -1,4 +1,36 @@
 for (const n of names) {  const votes = await voting.totalVotesFor(    ethers.utils.formatBytes32String(n)  );  console.log(`${n} has ${votes.toString()} votes`);}
+const names = ["Joshua Lukak", "Hudeifa Osman", "Abenezer", "Precious Nwoke"];
+const voting = Voting.attach("0x2660C352D25E0a0e7430d94CeB588E7097384E57");
+const Voting = await ethers.getContractFactory("Voting");
+for (const n of names) {  const votes = await voting.totalVotesFor(    ethers.utils.formatBytes32String(n)  );  console.log(`${n} has ${votes.toString()} votes`);}
+const names = ["Joshua Lukak", "Hudeifa Osman", "Abenezer", "Precious Nwoke"];
+const voting = Voting.attach("0x1961715E7BCC0b850EdfD9503ebD8d31015558Cd");
+const Voting = await ethers.getContractFactory("Voting");
+for (const n of names) {  const votes = await voting.totalVotesFor(    ethers.utils.formatBytes32String(n)  );  console.log(`${n} has ${votes.toString()} votes`);}
+for (const n of names2) {  const votes = await voting.totalVotesFor(    ethers.utils.formatBytes32String(n)  );  console.log(`${n} has ${votes.toString()} votes`);}
+const names2 = ["Joshua Lukak", "Hudeifa Osman", "Abenezer", "Precious Nwoke"];
+const names = ["Joshua Lukak", "Hudeifa Osman", "Abenezer", "Precious Nwoke"];
+for (const n of names) {  const votes = await voting.totalVotesFor(    ethers.utils.formatBytes32String(n)  );  console.log(`${n} has ${votes.toString()} votes`);}
+}
+  console.log(`${n} has ${votes.toString()} votes`);
+  );
+    ethers.utils.formatBytes32String(n)
+  const votes = await voting.totalVotesFor(
+for (const n of names) {
+const names = ["Jushua Lukak", "Hudeifa Osman", "Abenezer", "Precious Nwoke"];
+const voting = Voting.attach("0x1961715E7BCC0b850EdfD9503ebD8d31015558Cd");
+const Voting = await ethers.getContractFactory("Voting");
+const names = ["Joshua Lukak", "Hudeifa Osman", "Abenezer", "Precious Nwoke"];
+const names = ["Jushua Lukak", "Hudeifa Osman", "Abenezer", "Precious Nwoke"];
+for (const n of names) {  const votes = await voting.totalVotesFor(    ethers.utils.formatBytes32String(n)  );  console.log(`${n} has ${votes.toString()} votes`);}
+const names = ["Joshua Lukak", "Hudeifa Osman", "Abenezer", "Precious Nwoke"];
+const voting = Voting.attach("0x1961715E7BCC0b850EdfD9503ebD8d31015558Cd");
+const Voting = await ethers.getContractFactory("Voting");
+for (const n of names) {  const votes = await voting.totalVotesFor(    ethers.utils.formatBytes32String(n)  );  console.log(`${n} has ${votes.toString()} votes`);}
+const names = ["Joshua Lukak", "Hudeifa Osman", "Abenezer", "Precious Nwoke"];
+const voting = Voting.attach("0x1961715E7BCC0b850EdfD9503ebD8d31015558Cd");
+const Voting = await ethers.getContractFactory("Voting");
+for (const n of names) {  const votes = await voting.totalVotesFor(    ethers.utils.formatBytes32String(n)  );  console.log(`${n} has ${votes.toString()} votes`);}
 }
   console.log(`${n} has ${votes.toString()} votes`);
   );

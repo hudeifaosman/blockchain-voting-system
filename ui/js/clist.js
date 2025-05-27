@@ -56,8 +56,7 @@
     const receipt = await votingContract.methods
       .voteForCandidate(hexName)
       .send({
-        from: userAccount,
-        gasPrice: '0'
+        from: userAccount
       })
     console.log('Tx sent:', receipt.transactionHash);
   });
