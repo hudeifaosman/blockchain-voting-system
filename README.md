@@ -1,132 +1,101 @@
-# Cryptopia Voting
-Voting system using blockchain technology
-Project implemented as part of Rajasthan Hackathron
+# Build → Run → Test Cryptopia
 
-## Description
+## Prerequisites
 
-* The authority must login first with the provided session ID.
-* The voter can now begin the process of voting with proper authentication through OTP(one time password) on the respective linked mobile number.
-* If the voter is valid then the system will check for for the voters age and the address to which he can give vote.
-* the voting pallete will be opned with  candidate names,their parties and logos.
-* Now the voter can give his vote by clicking vote button.
-* one voter can give his vote only once,i.e after one time voting buttons are disabled and the vote is automatically loged out.
-* Same process continiues for many more votters irrespective of their voting wards.
+- **Node.js ≥ 14.x** (we used 16.x LTS).
+    
+    We recommend managing versions with [nvm](https://github.com/nvm-sh/nvm).
+    
+- **npm** (comes with Node)
+- **MetaMask** installed in your browser
+- **Python 3** (optional, for `python3 -m http.server`)
 
-### Installing and Running Project
+## 1. Clone & install
 
-Clone Project
-```
-git clone git@github.com:sanattaori/techdot.git && cd techdot
-```
-Install Dependencies
-```
+```bash
+git clone https://github.com/hudeifaosman/blockchain-voting-system
+cd blockchain-voting-system
+
+# ensure correct Node version
+nvm install --lts
+nvm use --lts
+
+# install project dependencies
 npm install
 ```
-Running Project
-```
-node index.js
-```
-If dependency problem occurs delete package.json, Run
-```
-npm init
-```
-Again Install dependencies and run project.
 
+> This pulls in Hardhat, ethers.js v5, the Hardhat-Ethers plugin, and any front-end libs.
+> 
 
-### Running Project
-Step 1 - Setting up Environment
-Instead of developing the app against the live Ethereum blockchain, we have used an in-memory blockchain (think of it as a blockchain simulator) called testrpc.
+## 2. Run your local chain
 
-```
-npm install ethereumjs-testrpc web3
+We’ll use Ganache-CLI (no install needed):
+
+```bash
+npx ganache-cli
 ```
 
-Step 2 - Creating Voting Smart Contract
+This starts a JSON-RPC node at `http://127.0.0.1:8545` with a handful of funded accounts.
 
-```
-npm install solc
-```
+> Leave this running in its own terminal window/tab.
+> 
 
-Replace your aadhaar no and phone number for running project at https://github.com/sanattaori/techdot/blob/7814403250f8b042992c6d437d9f9db8f98f3729/ui/js/app.js#L39
+## 3. Compile & deploy
 
-Step 3 - Testing in node console
+In a fresh terminal (inside your project):
 
-Not required just for testing in node console-
-After writing our smart contract, we'll use Web3js to deploy our app and interact with it
-```
-$ node
-> Web3 = require('web3')
-> web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-Then ensure Web3js is initalized and can query all accounts on the blockchain
+```bash
+# compile your upgraded 0.8.x Solidity
+npx hardhat compile
 
-> web3.eth.accounts
-Lastly, compile the contract by loading the code from Voting.sol in to a string variable and compiling it
-
-> code = fs.readFileSync('Voting.sol').toString()
-> solc = require('solc')
-> compiledCode = solc.compile(code)
-```
-testrpc creates 10 test accounts to play with automatically. These accounts come preloaded with 100 (fake) ethers.
-
-Deploy the contract!
-
-dCode.contracts[‘:Voting’].bytecode: bytecode which will be deployed to the blockchain.
-compiledCode.contracts[‘:Voting’].interface: interface of the contract (called abi) which tells the contract user what methods are available in the contract.
-```
-> abiDefinition = JSON.parse(compiledCode.contracts[':Voting'].interface)
-> VotingContract = web3.eth.contract(abiDefinition)
-> byteCode = compiledCode.contracts[':Voting'].bytecode
->deployedContract = VotingContract.new(['Sanat','Aniket','Mandar','Akshay'],{data: byteCode, from: web3.eth.accounts[0], gas: 4700000})
-> deployedContract.address
-> contractInstance = VotingContract.at(deployedContract.address)
-deployedContract.address. When you have to interact with your contract, you need this deployed address and abi definition we talked about earlier.
-```
-Step 4 - Interacting with the Contract via the Nodejs Console
-```
-> contractInstance.totalVotesFor.call('Sanat').toLocaleString()
-'2'
+# deploy to Ganache
+npx hardhat run scripts/deploy.js --network localhost
 ```
 
-### For TypeError: Cannot read property ':Voting' of undefined :
-Make sure you have ganache-cli
+You should see:
+
 ```
-sudo npm install ganache-cli -g
+Nothing to compile   # or “Compiled 1 Solidity file successfully…”
+Voting deployed to: 0x…YourContractAddress…
 ```
-copy address of first account
-```
-$ ganache-cli
-```
-Paste this adderess to 
-ui/js/clist.js line 17
-https://github.com/sanattaori/techdot/blob/cecabc1917965ed7404e4c444b7572c97e10dcf9/ui/js/clist.js#L17
 
+## 4. Serve & test in browser
 
-### Purpose of test
+MetaMask will only inject on HTTP—so run:
 
- * The authority login is to ensure security to prevent piracy,harresment and corruption from candidates standing in election.
- * OTP generation is to authenticate the right aadhar card owner.
- * button disabling and automatic logout is to prevent multiple voting by single candidate. 
+- **Option A (Python)**
+    
+    ```bash
+    
+    python3 -m http.server 8000
+    ```
+    
+    → browse to [http://localhost:8000/ui](http://localhost:8000/ui)
+    
+- **Option B (Node)**
+    
+    ```bash
+    npx http-server -c-1
+    ```
+    
+    → use the URL it prints (e.g. [http://127.0.0.1:8080](http://127.0.0.1:8080/))
+    
 
-### Screenshots
-* ![](https://raw.githubusercontent.com/sanattaori/techdot/master/screenshot/1.PNG)
-* ![](https://raw.githubusercontent.com/sanattaori/techdot/master/screenshot/2.PNG)
-* ![](https://raw.githubusercontent.com/sanattaori/techdot/master/screenshot/3.PNG)
-* ![](https://raw.githubusercontent.com/sanattaori/techdot/master/screenshot/4.PNG)
-* ![](https://raw.githubusercontent.com/sanattaori/techdot/master/screenshot/5.PNG)
-* ![](https://raw.githubusercontent.com/sanattaori/techdot/master/screenshot/gan.PNG)
+Once the page loads:
 
-## Deployment
+1. Click **Connect Wallet** → approve in MetaMask (ensure MetaMask’s network is set to “Localhost 8545”).
+2. Your address should appear on-page.
+3. Click **Vote** for any candidate → MetaMask will prompt for the transaction.
+4. Confirm → you should see “Tx sent: 0x…” and the vote counts update live.
 
-The Aadhaar based voting system is developed to overcome the flaws of EVM system. So directly EVM will be replaced by touch screen interface having the great
-user interface and high security.
+### Switch MetaMask to your local network
 
-## Authors
-
-* **Sanat Taori**
-* **Akshay Motghare**
-* **Mandar Patil** 
-* **Aniket Narkhede**
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+1. Open MetaMask and click the network selector at the top (it currently says “Ethereum Mainnet”).
+2. Choose **Add network** (or **Custom RPC**).
+3. Enter these details:
+    - **Network Name:** Localhost 8545
+    - **RPC URL:** `http://127.0.0.1:8545`
+    - **Chain ID:** `1337` (Ganache’s default)
+    - **Currency Symbol:** ETH
+    - **Block Explorer URL:** *(leave blank)*
+4. Save and then **switch** to **Localhost 8545** in the MetaMask network dropdown.
