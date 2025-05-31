@@ -22,7 +22,6 @@ async function main() {
 
   console.log("Voting deployed to:", voting.address);
 
-  // Write out ABI + address for ui/blockchain.json
   const artifact = require("../artifacts/contracts/Voting.sol/Voting.json");
   const out = {
     contractAddress: voting.address,
